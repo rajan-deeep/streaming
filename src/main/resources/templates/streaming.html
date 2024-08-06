@@ -17,7 +17,7 @@
 
 <!-- HLS video player -->
 <video id="videoPlayer" width="640" height="360" controls>
-    <source id="videoSource" src="/hls/random_3/low/index.m3u8" type="application/x-mpegURL">
+    <source id="videoSource" src="/hls/[[${folder}]]/low/index.m3u8" type="application/x-mpegURL">
     Your browser does not support the video tag.
 </video>
 
@@ -28,7 +28,7 @@
 
     // Function to change video quality
     function changeQuality(quality) {
-        videoSource.src = '/hls/random_3/' + quality + '/index.m3u8';
+        videoSource.src = '/hls/[[${folder}]]/' + quality + '/index.m3u8';
         video.load(); // Reload video with new source
         video.play(); // Start playback
     }

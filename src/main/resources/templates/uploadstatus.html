@@ -28,7 +28,7 @@
       var hls = new Hls();
 
       function loadVideo(quality) {
-          var url = '/hls/' + /*[[${folder}]]*/ 'random_3' + '/' + quality + '/index.m3u8';
+          var url = '/hls/[[${folder}]]/' + quality + '/index.m3u8';
           hls.loadSource(url);
           hls.attachMedia(video);
           hls.on(Hls.Events.MANIFEST_PARSED, function() {
@@ -46,7 +46,7 @@
       });
   } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
       // Native HLS support for Safari
-      video.src = '/hls/' + /*[[${folder}]]*/ 'random_3' + '/low/index.m3u8';
+      video.src = '/hls/[[${folder}]]/low/index.m3u8';
       video.addEventListener('loadedmetadata', function() {
           video.play();
       });

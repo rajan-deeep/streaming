@@ -26,15 +26,14 @@ public class UploadController {
                                    Model model) throws IOException {
         // Save the uploaded file
         String originalFilename = file.getOriginalFilename();
-        Path filePath = Paths.get(uploadDir + File.separator + originalFilename);
-        Files.write(filePath, file.getBytes());
-
-        // Use the filename (without extension) as the folder name
         String folderName = originalFilename.substring(0, originalFilename.lastIndexOf('.'));
-        String outputFolderPath = uploadDir + File.separator + folderName;
+        Path filePath = Paths.get(uploadDir + File.separator + folderName + File.separator + originalFilename);
+        Files.createDirectories(filePath.getParent());
+        Files.write(filePath, file.getBytes());
 
         // Convert the uploaded video to HLS
         String inputFilePath = filePath.toString();
+        String outputFolderPath = filePath.getParent().toString();
 
         try {
             VideoConversionUtil.convertToHLS(inputFilePath, outputFolderPath);

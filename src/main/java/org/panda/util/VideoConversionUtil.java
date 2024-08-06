@@ -13,9 +13,9 @@ public class VideoConversionUtil {
         }
 
         // Ensure subdirectories are created
-        new File(outputFolderPath + "/low").mkdirs();
-        new File(outputFolderPath + "/medium").mkdirs();
-        new File(outputFolderPath + "/high").mkdirs();
+        new File(outputFolderPath + File.separator + "low").mkdirs();
+        new File(outputFolderPath + File.separator + "medium").mkdirs();
+        new File(outputFolderPath + File.separator + "high").mkdirs();
 
         // Low bitrate command
         String lowBitrateCommand = String.format(
@@ -46,7 +46,7 @@ public class VideoConversionUtil {
                 "#EXT-X-STREAM-INF:BANDWIDTH=2800000,RESOLUTION=1280x720\n" +
                 "high/index.m3u8\n";
 
-        File masterPlaylist = new File(outputFolderPath + "/master.m3u8");
+        File masterPlaylist = new File(outputFolderPath + File.separator + "master.m3u8");
         Files.write(masterPlaylist.toPath(), masterPlaylistContent.getBytes());
     }
 
