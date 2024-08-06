@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Upload Video</title>
+</head>
+<body>
+<h1>Upload Video</h1>
+<form method="post" enctype="multipart/form-data" action="/upload">
+    <label for="file">Choose video file:</label>
+    <input type="file" id="file" name="file" accept="video/*" required>
+    <br><br>
+    <label for="bitrate">Bitrate:</label>
+    <select id="bitrate" name="bitrate">
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+    </select>
+    <br><br>
+    <button type="submit">Upload</button>
+</form>
+</body>
+</html>

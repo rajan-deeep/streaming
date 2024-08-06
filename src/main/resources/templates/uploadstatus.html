@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Status</title>
+  <!-- Include hls.js via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+<h1>Upload Status</h1>
+<p>Filename: <span th:text="${filename}"></span></p>
+<p>Filesize: <span th:text="${filesize}"></span></p>
+
+<!-- Quality Selector -->
+<select id="qualitySelector">
+  <option value="low">Low</option>
+  <option value="medium">Medium</option>
+  <option value="high">High</option>
+</select>
+
+<!-- HLS video player -->
+<video id="video" width="640" height="360" controls></video>
+
+<script>
+  // Check if HLS.js is supported
+  if (Hls.isSupported()) {
+      var video = document.getElementById('video');
+      var hls = new Hls();
+
+      function loadVideo(quality) {
+          var url = '/hls/' + /*[[${folder}]]*/ 'random_3' + '/' + quality + '/index.m3u8';
+          hls.loadSource(url);
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED, function() {
+              video.play();
+          });
+      }
+
+      // Load the video with the default quality passed from the server
+      var defaultQuality = /*[[${defaultQuality}]]*/ 'low';
+      loadVideo(defaultQuality);
+
+      document.getElementById('qualitySelector').addEventListener('change', function() {
+          var quality = this.value;
+          loadVideo(quality);
+      });
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      // Native HLS support for Safari
+      video.src = '/hls/' + /*[[${folder}]]*/ 'random_3' + '/low/index.m3u8';
+      video.addEventListener('loadedmetadata', function() {
+          video.play();
+      });
+  }
+</script>
+</body>
+</html>

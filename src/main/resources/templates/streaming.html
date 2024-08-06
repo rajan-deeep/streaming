@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Video Streaming</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+<h1>Video Streaming</h1>
+
+<!-- Quality Selector -->
+<select id="qualitySelector">
+    <option value="low">Low</option>
+    <option value="medium">Medium</option>
+    <option value="high">High</option>
+</select>
+
+<!-- HLS video player -->
+<video id="videoPlayer" width="640" height="360" controls>
+    <source id="videoSource" src="/hls/random_3/low/index.m3u8" type="application/x-mpegURL">
+    Your browser does not support the video tag.
+</video>
+
+<script>
+    var video = document.getElementById('videoPlayer');
+    var qualitySelector = document.getElementById('qualitySelector');
+    var videoSource = document.getElementById('videoSource');
+
+    // Function to change video quality
+    function changeQuality(quality) {
+        videoSource.src = '/hls/random_3/' + quality + '/index.m3u8';
+        video.load(); // Reload video with new source
+        video.play(); // Start playback
+    }
+
+    // Listen for quality change
+    qualitySelector.addEventListener('change', function() {
+        var selectedQuality = qualitySelector.value;
+        changeQuality(selectedQuality);
+    });
+
+    // Initialize with default quality
+    changeQuality('low');
+</script>
+</body>
+</html>
