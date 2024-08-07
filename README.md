@@ -5,9 +5,9 @@ Have jdk 17 and maven installed
 It's a springboot application so service up will be easy.
 
 Once up:
-hit localhost:8080/upload
-upload any video, it store video in 3 bitrate low,medium,high
-go to video list page and play any video.
+1. hit localhost:8080/upload
+2. upload any video, it store video in 3 bitrate low,medium,high
+3. go to video list page and play any video.
 
 
 This service does not have database integration for now, so videos are getting stored in same folder
