@@ -10,5 +10,6 @@ Once up:
 3. go to video list page and play any video.
 
 
-This service does not have database integration for now, so videos are getting stored in same folder
-so change the path in application.properties accordingly file.upload-dir (give path where you want to store the video segments)
+This service does not have database integration for now,
+1. so processed video segments are getting stored in same folder(no original video is stored)
+2. change the path in application.properties accordingly file.upload-dir (give path where you want to store the video segments)
