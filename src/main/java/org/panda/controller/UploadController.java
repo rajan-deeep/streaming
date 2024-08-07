@@ -22,7 +22,6 @@ public class UploadController {
 
     @PostMapping("/upload")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
-                                   @RequestParam("bitrate") String bitrate,
                                    Model model) throws IOException {
         // Save the uploaded file
         String originalFilename = file.getOriginalFilename();
@@ -45,7 +44,6 @@ public class UploadController {
 
         // Add attributes for Thymeleaf
         model.addAttribute("filename", originalFilename);
-        model.addAttribute("bitrate", bitrate);
         model.addAttribute("folder", folderName);
         model.addAttribute("filesize", file.getSize());
         model.addAttribute("defaultQuality", "low"); // You can dynamically set this based on some logic

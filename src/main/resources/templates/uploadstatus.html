@@ -5,6 +5,13 @@
   <title>Upload Status</title>
   <!-- Include hls.js via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <style>
+    .video-link {
+      font-weight: bold;
+      margin-top: 20px;
+      display: inline-block;
+    }
+  </style>
 </head>
 <body>
 <h1>Upload Status</h1>
@@ -20,6 +27,10 @@
 
 <!-- HLS video player -->
 <video id="video" width="640" height="360" controls></video>
+
+<br>
+<!-- Link to Videos Page -->
+<a href="/videos" class="video-link">Go to Videos Page</a>
 
 <script>
   // Check if HLS.js is supported
