@@ -10,7 +10,10 @@ import java.nio.file.Files;
 public class VideoConversionUtil {
 
     public static void convertToHLS(String inputFilePath, String outputFolderPath) throws IOException {
+        File inputFile = new File(inputFilePath);
         File outputFolder = new File(outputFolderPath);
+
+        // Create output folder and subdirectories if they do not exist
         if (!outputFolder.exists()) {
             outputFolder.mkdirs();
         }
@@ -55,11 +58,25 @@ public class VideoConversionUtil {
 
         File masterPlaylist = new File(outputFolderPath + File.separator + "master.m3u8");
         Files.write(masterPlaylist.toPath(), masterPlaylistContent.getBytes());
+
+        // Attempt to delete the original video file
+        if (inputFile.exists()) {
+            boolean deleted = inputFile.delete();
+            if (!deleted) {
+                log.warn("Failed to delete the original video file: " + inputFilePath);
+                log.warn("File exists after deletion attempt: " + inputFile.exists());
+            } else {
+                log.info("Successfully deleted the original video file: " + inputFilePath);
+            }
+        } else {
+            log.warn("Original video file does not exist: " + inputFilePath);
+        }
     }
 
     private static void generateThumbnail(String inputFilePath, String outputFolderPath) throws IOException {
         String thumbnailsFolderPath = outputFolderPath + File.separator + "thumbnails";
         File thumbnailsFolder = new File(thumbnailsFolderPath);
+
         if (!thumbnailsFolder.exists()) {
             thumbnailsFolder.mkdirs();
         }
@@ -67,8 +84,12 @@ public class VideoConversionUtil {
         String thumbnailPath = thumbnailsFolderPath + File.separator + "thumbnail.png";
         File thumbnailFile = new File(thumbnailPath);
 
+        // Delete existing thumbnail if it exists
         if (thumbnailFile.exists()) {
-            thumbnailFile.delete(); // Delete existing thumbnail if it exists
+            boolean deleted = thumbnailFile.delete();
+            if (!deleted) {
+                log.warn("Failed to delete existing thumbnail file: " + thumbnailPath);
+            }
         }
 
         String thumbnailCommand = String.format(
