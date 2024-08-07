@@ -65,6 +65,12 @@ public class VideoConversionUtil {
         }
 
         String thumbnailPath = thumbnailsFolderPath + File.separator + "thumbnail.png";
+        File thumbnailFile = new File(thumbnailPath);
+
+        if (thumbnailFile.exists()) {
+            thumbnailFile.delete(); // Delete existing thumbnail if it exists
+        }
+
         String thumbnailCommand = String.format(
                 "ffmpeg -i \"%s\" -ss 00:00:01.000 -vframes 1 \"%s\"",
                 inputFilePath, thumbnailPath);
