@@ -22,21 +22,27 @@ public class VideoListController {
     @GetMapping("/videos")
     public String listVideos(Model model) throws IOException {
         File directory = new File(uploadDir);
+        List<String> videoExtensions = List.of(
+                ".mp4", ".avi", ".mov", ".mkv", ".flv", ".wmv",
+                ".webm", ".mpg", ".mpeg", ".3gp", ".m4v", ".ogv"
+        );
+
         List<Video> videoList = Arrays.stream(directory.listFiles())
                 .filter(File::isDirectory)
                 .flatMap(folder -> Arrays.stream(folder.listFiles())
-                        .filter(file -> file.getName().endsWith(".mp4")) // Adjust file extension if needed
+                        .filter(file -> videoExtensions.stream().anyMatch(file.getName()::endsWith))
                         .map(file -> new Video(folder.getName(), file.getName())))
                 .collect(Collectors.toList());
 
         model.addAttribute("videos", videoList);
 
-        for(Video each: videoList){
-            log.info(each.getFilename()+","+each.folder);
+        for (Video each : videoList) {
+            log.info(each.getFilename() + "," + each.getFolder());
         }
 
         return "video-list";
     }
+
 
 
     static class Video {
