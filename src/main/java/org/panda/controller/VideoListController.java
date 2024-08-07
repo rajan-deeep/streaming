@@ -23,6 +23,12 @@ public class VideoListController {
     public String listVideos(Model model) throws IOException {
         File directory = new File(uploadDir);
 
+        // Check if directory exists and is not empty
+        if (!directory.exists() || !directory.isDirectory()) {
+            model.addAttribute("message", "No videos found. Please upload a video.");
+            return "video-list";
+        }
+
         List<Video> videoList = Arrays.stream(directory.listFiles())
                 .filter(File::isDirectory) // Look for directories
                 .flatMap(folder -> Arrays.stream(folder.listFiles())
@@ -30,7 +36,11 @@ public class VideoListController {
                         .map(file -> new Video(folder.getName(), file.getName())))
                 .collect(Collectors.toList());
 
-        model.addAttribute("videos", videoList);
+        if (videoList.isEmpty()) {
+            model.addAttribute("message", "No videos found. Please upload a video.");
+        } else {
+            model.addAttribute("videos", videoList);
+        }
 
         for (Video each : videoList) {
             log.info(each.getFilename() + "," + each.getFolder());

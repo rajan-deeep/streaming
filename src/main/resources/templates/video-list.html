@@ -49,12 +49,21 @@
             color: #fff;
             font-size: 14px; /* Adjust font size if needed */
         }
+        .no-videos-message {
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+            margin-top: 20px;
+        }
     </style>
     <!-- Include hls.js via CDN -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
 <h1>Video List</h1>
+
+<p th:if="${message}" th:text="${message}" class="no-videos-message"></p>
+
 <div id="videoContainer">
     <div th:each="video : ${videos}" class="video-widget">
         <img th:src="@{/thumbnails/{folder}/thumbnail.png(folder=${video.folder})}"
