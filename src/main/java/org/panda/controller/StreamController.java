@@ -1,5 +1,6 @@
 package org.panda.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -15,17 +16,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Controller
+@Slf4j
 public class StreamController {
 
     @Value("${file.upload-dir}")
     private String uploadDir;
-
-    @GetMapping("/stream/{folder}/{filename}")
-    public String streamVideo(@PathVariable String folder, @PathVariable String filename, Model model) {
-        model.addAttribute("folder", folder);
-        model.addAttribute("filename", filename);
-        return "streaming";
-    }
 
     @GetMapping("/hls/{folder}/master.m3u8")
     public ResponseEntity<Resource> getMasterPlaylist(@PathVariable String folder) {

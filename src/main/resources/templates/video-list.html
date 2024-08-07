@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Video List</title>
+    <style>
+        .video-widget {
+            position: relative;
+            display: inline-block;
+            width: 320px; /* Widget width */
+            height: 240px; /* Widget height */
+            margin: 10px;
+            border: 1px solid #ccc;
+            overflow: hidden;
+            background-color: #000;
+        }
+        .video-thumbnail {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        .video-player {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none; /* Hide by default */
+            z-index: 2;
+        }
+        .quality-selector {
+            position: absolute;
+            bottom: 10px; /* Adjust as needed */
+            left: 10px;
+            z-index: 3;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px;
+            border-radius: 5px;
+            color: #fff; /* Make text readable */
+            font-size: 14px; /* Adjust font size if needed */
+        }
+        .quality-selector select {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 14px; /* Adjust font size if needed */
+        }
+    </style>
+    <!-- Include hls.js via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+<h1>Video List</h1>
+<div id="videoContainer">
+    <div th:each="video : ${videos}" class="video-widget">
+        <img th:src="@{/thumbnails/{folder}/thumbnail.png(folder=${video.folder})}"
+             alt="Thumbnail"
+             class="video-thumbnail"
+             th:data-folder="${video.folder}"
+             th:data-filename="${video.filename}"
+             onclick="playVideo(this)">
+        <video class="video-player" controls></video>
+        <div class="quality-selector">
+            <select class="qualitySelector">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<script>
+    function playVideo(thumbnail) {
+        var folder = thumbnail.getAttribute('data-folder');
+        var filename = thumbnail.getAttribute('data-filename').split('.')[0]; // Remove extension
+
+        var widget = thumbnail.closest('.video-widget');
+        var videoPlayer = widget.querySelector('.video-player');
+        var qualitySelector = widget.querySelector('.qualitySelector');
+
+        if (Hls.isSupported()) {
+            var hls = new Hls();
+
+            function loadVideo(quality) {
+                var url = '/hls/' + encodeURIComponent(folder) + '/' + quality + '/index.m3u8';
+                hls.loadSource(url);
+                hls.attachMedia(videoPlayer);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    videoPlayer.play();
+                });
+            }
+
+            // Load the video with the default quality
+            var defaultQuality = 'low';
+            loadVideo(defaultQuality);
+
+            // Handle quality selector change
+            qualitySelector.onchange = function() {
+                var quality = this.value;
+                loadVideo(quality);
+            };
+        } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
+            // Native HLS support for Safari
+            videoPlayer.src = '/hls/' + encodeURIComponent(folder) + '/low/index.m3u8';
+            videoPlayer.addEventListener('loadedmetadata', function() {
+                videoPlayer.play();
+            });
+        }
+
+        // Show the video player and hide the thumbnail
+        videoPlayer.style.display = 'block';
+        thumbnail.style.display = 'none';
+    }
+</script>
+</body>
+</html>

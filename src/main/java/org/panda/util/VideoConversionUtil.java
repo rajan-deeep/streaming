@@ -1,9 +1,12 @@
 package org.panda.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
+@Slf4j
 public class VideoConversionUtil {
 
     public static void convertToHLS(String inputFilePath, String outputFolderPath) throws IOException {
@@ -16,6 +19,10 @@ public class VideoConversionUtil {
         new File(outputFolderPath + File.separator + "low").mkdirs();
         new File(outputFolderPath + File.separator + "medium").mkdirs();
         new File(outputFolderPath + File.separator + "high").mkdirs();
+        new File(outputFolderPath + File.separator + "thumbnails").mkdirs(); // Thumbnail directory
+
+        // Generate thumbnail
+        generateThumbnail(inputFilePath, outputFolderPath);
 
         // Low bitrate command
         String lowBitrateCommand = String.format(
@@ -50,12 +57,26 @@ public class VideoConversionUtil {
         Files.write(masterPlaylist.toPath(), masterPlaylistContent.getBytes());
     }
 
+    private static void generateThumbnail(String inputFilePath, String outputFolderPath) throws IOException {
+        String thumbnailsFolderPath = outputFolderPath + File.separator + "thumbnails";
+        File thumbnailsFolder = new File(thumbnailsFolderPath);
+        if (!thumbnailsFolder.exists()) {
+            thumbnailsFolder.mkdirs();
+        }
+
+        String thumbnailPath = thumbnailsFolderPath + File.separator + "thumbnail.png";
+        String thumbnailCommand = String.format(
+                "ffmpeg -i \"%s\" -ss 00:00:01.000 -vframes 1 \"%s\"",
+                inputFilePath, thumbnailPath);
+
+        executeCommand(thumbnailCommand);
+    }
+
     private static void executeCommand(String command) throws IOException {
         ProcessBuilder processBuilder = new ProcessBuilder("/bin/bash", "-c", command);
         processBuilder.redirectErrorStream(true);
         Process process = processBuilder.start();
 
-        // Log command output
         new Thread(() -> {
             try (var reader = new java.io.BufferedReader(new java.io.InputStreamReader(process.getInputStream()))) {
                 String line;
