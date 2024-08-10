@@ -29,17 +29,17 @@ public class VideoConversionUtil {
 
         // Low bitrate command
         String lowBitrateCommand = String.format(
-                "ffmpeg -i \"%s\" -b:v 800k -maxrate 856k -bufsize 1200k -vf scale=-1:360 -hls_time 10 -hls_playlist_type vod -hls_segment_filename \"%s/low/segment_%%03d.ts\" \"%s/low/index.m3u8\"",
+                "ffmpeg -i \"%s\" -vf scale=iw/2*2:ih/2*2 -b:v 800k -maxrate 856k -bufsize 1200k -hls_time 10 -hls_playlist_type vod -hls_segment_filename \"%s/low/segment_%%03d.ts\" \"%s/low/index.m3u8\"",
                 inputFilePath, outputFolderPath, outputFolderPath);
 
         // Medium bitrate command
         String mediumBitrateCommand = String.format(
-                "ffmpeg -i \"%s\" -b:v 1400k -maxrate 1498k -bufsize 2100k -vf scale=-1:540 -hls_time 10 -hls_playlist_type vod -hls_segment_filename \"%s/medium/segment_%%03d.ts\" \"%s/medium/index.m3u8\"",
+                "ffmpeg -i \"%s\" -vf scale=iw/2*2:ih/2*2 -b:v 1400k -maxrate 1498k -bufsize 2100k -hls_time 10 -hls_playlist_type vod -hls_segment_filename \"%s/medium/segment_%%03d.ts\" \"%s/medium/index.m3u8\"",
                 inputFilePath, outputFolderPath, outputFolderPath);
 
         // High bitrate command
         String highBitrateCommand = String.format(
-                "ffmpeg -i \"%s\" -b:v 2800k -maxrate 2996k -bufsize 4200k -vf scale=-1:720 -hls_time 10 -hls_playlist_type vod -hls_segment_filename \"%s/high/segment_%%03d.ts\" \"%s/high/index.m3u8\"",
+                "ffmpeg -i \"%s\" -vf scale=iw/2*2:ih/2*2 -b:v 2800k -maxrate 2996k -bufsize 4200k -hls_time 10 -hls_playlist_type vod -hls_segment_filename \"%s/high/segment_%%03d.ts\" \"%s/high/index.m3u8\"",
                 inputFilePath, outputFolderPath, outputFolderPath);
 
         // Execute FFmpeg commands

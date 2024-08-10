@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 
 @SpringBootApplication(scanBasePackages = {"org.panda"}, exclude = {DataSourceAutoConfiguration.class, KafkaAutoConfiguration.class})
-public class Main {
+public class StreamingServer {
     public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
+        SpringApplication.run(StreamingServer.class, args);
     }
 }

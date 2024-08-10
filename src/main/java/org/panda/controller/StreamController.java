@@ -47,6 +47,7 @@ public class StreamController {
     @GetMapping("/hls/{folder}/{quality}/{file:.+}")
     public ResponseEntity<Resource> getMediaSegment(@PathVariable String folder, @PathVariable String quality, @PathVariable String file) {
         try {
+            log.info("this folder {},this quality {},this segment {} retrieving", folder, quality, file);
             Path filePath = Paths.get(uploadDir + File.separator + folder + File.separator + quality + File.separator + file);
             Resource resource = new UrlResource(filePath.toUri());
             return ResponseEntity.ok().body(resource);
