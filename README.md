@@ -13,3 +13,7 @@ Once up:
 This service does not have database integration for now,
 1. so processed video segments are getting stored in same folder(no original video is stored)
 2. change the path in application.properties accordingly file.upload-dir (give path where you want to store the video segments)
+
+
+live service:
+myownpanda.com
