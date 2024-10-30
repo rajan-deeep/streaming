@@ -17,3 +17,10 @@ This service does not have database integration for now,
 
 live service:
 myownpanda.com
+
+logs tracking: http://89.116.32.180:5601/app/logs/stream
+
+elasticsearch for storing the logs
+logstash for collecting the logs and transforming before sending it to elastic
+kibana for quering the logs and visualising the logs on top of elastic
+filebeat as log shipper
