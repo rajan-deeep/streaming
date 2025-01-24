@@ -16,7 +16,7 @@ This service does not have database integration for now,
 
 
 live service:
-myownpanda.com
+[myownpanda.com](https://myownpanda.com/)
 
 logs tracking: http://89.116.32.180:5601/app/logs/stream
 
